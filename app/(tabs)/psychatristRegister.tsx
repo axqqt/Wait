@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, Alert, Image } from 'react-native';
+import { 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  Alert, 
+  Image, 
+  StyleSheet, 
+  SafeAreaView, 
+  ScrollView, 
+  KeyboardAvoidingView, 
+  Platform 
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { TextInput } from 'react-native-gesture-handler';
@@ -7,9 +18,9 @@ import { TextInput } from 'react-native-gesture-handler';
 const PsychiatristRegister = () => {
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
-  const [attachment, setAttachment] = useState<string | null>(null);
+  const [attachment, setAttachment] = useState(null);
 
-  const baseURL = "https://wait-backend.vercel.app"
+  const baseURL = "https://wait-backend.vercel.app";
 
   const handleEmail = async () => {
     if (!email.trim()) {
@@ -27,8 +38,8 @@ const PsychiatristRegister = () => {
     formData.append('description', description);
     formData.append('attachment', {
       uri: attachment,
-      name: 'proof.jpg', // Adjust the name and type according to your file
-      type: 'image/jpeg', // Assuming the image type is JPEG, adjust as needed
+      name: 'proof.jpg',
+      type: 'image/jpeg',
     });
 
     try {
@@ -57,56 +68,133 @@ const PsychiatristRegister = () => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setAttachment(result.uri);
     }
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{margin:"60px", fontSize:"40px"}}>Register</Text>
-      <TextInput
-        style={{ width: '80%', height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Your Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-
-      <TextInput
-        style={{ width: '80%', height: 100, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}
-        value={description}
-        onChangeText={setDescription}
-        placeholder="Brief Description"
-        multiline
-      />
-
-      <TouchableOpacity
-        style={{ backgroundColor: 'blue', padding: 10, marginBottom: 10 }}
-        onPress={handleAttachment}
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
       >
-        <Text style={{ color: 'white' }}>Attach Proof of Certification</Text>
-      </TouchableOpacity>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          <Text style={styles.title}>Register</Text>
+          
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Your Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
 
-      {attachment && (
-        <View style={{ width: '80%', height: 200, marginBottom: 10 }}>
-          <Image source={{ uri: attachment }} style={{ width: '100%', height: '100%' }} />
-        </View>
-      )}
+          <TextInput
+            style={[styles.input, styles.descriptionInput]}
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Brief Description"
+            multiline
+          />
 
-      <TouchableOpacity
-        style={{ backgroundColor: 'green', padding: 10 }}
-        onPress={handleEmail}
-      >
-        <Text style={{ color: 'white' }}>Send Email</Text>
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleAttachment}
+          >
+            <Text style={styles.buttonText}>Attach Proof of Certification</Text>
+          </TouchableOpacity>
 
-      <Text style={{ marginTop: 20, width: '80%', textAlign: 'center', fontSize: 12 }}>
-        Attach proof of certification and provide your email and a brief description before sending.
-      </Text>
-    </View>
+          {attachment && (
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: attachment }} style={styles.image} />
+            </View>
+          )}
+
+          <TouchableOpacity
+            style={[styles.button, styles.submitButton]}
+            onPress={handleEmail}
+          >
+            <Text style={styles.buttonText}>Submit Registration</Text>
+          </TouchableOpacity>
+
+          <Text style={styles.disclaimer}>
+            Attach proof of certification and provide your email and a brief description before sending.
+          </Text>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  scrollView: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    color: '#333',
+  },
+  input: {
+    width: '100%',
+    height: 50,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginBottom: 15,
+    paddingHorizontal: 15,
+    backgroundColor: 'white',
+    fontSize: 16,
+  },
+  descriptionInput: {
+    height: 100,
+    textAlignVertical: 'top',
+    paddingTop: 15,
+  },
+  button: {
+    backgroundColor: '#4a90e2',
+    padding: 15,
+    borderRadius: 10,
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  submitButton: {
+    backgroundColor: '#2ecc71',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  imageContainer: {
+    width: '100%',
+    height: 200,
+    marginBottom: 15,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  disclaimer: {
+    marginTop: 20,
+    width: '100%',
+    textAlign: 'center',
+    fontSize: 14,
+    color: '#666',
+  },
+});
 
 export default PsychiatristRegister;
