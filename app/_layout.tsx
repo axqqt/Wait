@@ -26,6 +26,10 @@ export default function RootLayout() {
     return null;
   }
 
+  const handleGoBack = () => {
+    navigation.goBack(); // Navigate back to the previous screen
+  };
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>

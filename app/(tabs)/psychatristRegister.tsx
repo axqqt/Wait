@@ -66,7 +66,7 @@ const PsychiatristLogin = () => {
         <Text style={styles.buttonText}>Send Email</Text>
       </TouchableOpacity>
 
-      <Text style={styles.infoText}>Attach proof of certification and provide your email and a brief description before sending.</Text>
+      <Text style={styles.infoText}>Attach proof of certification and provide your email and a brief description before sending. You will receive an response in 36-48 Hours</Text>
     </View>
   );
 };
