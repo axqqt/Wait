@@ -73,6 +73,23 @@ const PsychiatristRegister = () => {
     }
   };
 
+  const handleEditAttachment = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setAttachment(result.uri);
+    }
+  };
+
+  const handleDeleteAttachment = () => {
+    setAttachment(null);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 
@@ -107,8 +124,22 @@ const PsychiatristRegister = () => {
           </TouchableOpacity>
 
           {attachment && (
-            <View style={styles.imageContainer}>
+            <View style={styles.attachmentContainer}>
               <Image source={{ uri: attachment }} style={styles.image} />
+              <View style={styles.attachmentButtons}>
+                <TouchableOpacity 
+                  style={[styles.button, styles.editButton]} 
+                  onPress={handleEditAttachment}
+                >
+                  <Text style={styles.buttonText}>Edit</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={[styles.button, styles.deleteButton]} 
+                  onPress={handleDeleteAttachment}
+                >
+                  <Text style={styles.buttonText}>Delete</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
 
@@ -177,16 +208,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  imageContainer: {
+  attachmentContainer: {
     width: '100%',
-    height: 200,
+    alignItems: 'center',
     marginBottom: 15,
-    borderRadius: 10,
-    overflow: 'hidden',
   },
   image: {
     width: '100%',
-    height: '100%',
+    height: 200,
+    borderRadius: 10,
+  },
+  attachmentButtons: {
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  editButton: {
+    backgroundColor: '#f39c12',
+    marginRight: 10,
+  },
+  deleteButton: {
+    backgroundColor: '#e74c3c',
   },
   disclaimer: {
     marginTop: 20,

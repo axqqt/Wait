@@ -86,14 +86,14 @@ const PsychiatristLogin = () => {
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
-      {/* Google Login Button */}
+      {/* Google Login Button
       <TouchableOpacity
         style={[styles.button, { backgroundColor: '#DB4437' }]}
         onPress={() => promptAsync()}
         disabled={!request}
       >
         <Text style={[styles.buttonText, { color: 'white' }]}>Login with Google</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <Text style={styles.infoText}>Login using your credentials to proceed.</Text>
     </View>
