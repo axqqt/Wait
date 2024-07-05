@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { styles } from '../../styles';
 import io from 'socket.io-client';
+import { styles } from '../../styles'; // Ensure styles are imported correctly
 
-const socket = io('http://localhost:5000'); // Replace with your server address
+const socket = io('http://localhost:5000'); // Update with your server address
 
 const UserChatScreen = ({ navigation }) => {
   const [message, setMessage] = useState('');

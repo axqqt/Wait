@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, TextInput, Linking, Alert } from 'react-native';
-import * as DocumentPicker from 'expo-document-picker';
-import { styles } from '../../styles';
-import axios from 'axios'; // Import Axios for API requests
+import { Text, View, TouchableOpacity, Alert, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
+import { TextInput } from 'react-native-gesture-handler';
 
 const PsychiatristRegister = () => {
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
-  const [attachment, setAttachment] = useState(null);
+  const [attachment, setAttachment] = useState<string | null>(null);
 
   const handleEmail = async () => {
     if (!email.trim()) {
@@ -25,8 +25,8 @@ const PsychiatristRegister = () => {
     formData.append('description', description);
     formData.append('attachment', {
       uri: attachment,
-      name: 'proof.pdf', // Adjust the name and type according to your file
-      type: 'application/pdf',
+      name: 'proof.jpg', // Adjust the name and type according to your file
+      type: 'image/jpeg', // Assuming the image type is JPEG, adjust as needed
     });
 
     try {
@@ -48,18 +48,23 @@ const PsychiatristRegister = () => {
   };
 
   const handleAttachment = async () => {
-    const file = await DocumentPicker.getDocumentAsync({});
-    if (file.type === 'success') {
-      setAttachment(file.uri);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setAttachment(result.uri);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>I am a...</Text>
-
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text style={{margin:"60px", fontSize:"40px"}}>Register</Text>
       <TextInput
-        style={styles.input}
+        style={{ width: '80%', height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}
         value={email}
         onChangeText={setEmail}
         placeholder="Your Email"
@@ -68,22 +73,36 @@ const PsychiatristRegister = () => {
       />
 
       <TextInput
-        style={[styles.input, { height: 100 }]}
+        style={{ width: '80%', height: 100, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}
         value={description}
         onChangeText={setDescription}
         placeholder="Brief Description"
         multiline
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleAttachment}>
-        <Text style={styles.buttonText}>Attach Proof of Certification</Text>
+      <TouchableOpacity
+        style={{ backgroundColor: 'blue', padding: 10, marginBottom: 10 }}
+        onPress={handleAttachment}
+      >
+        <Text style={{ color: 'white' }}>Attach Proof of Certification</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={handleEmail}>
-        <Text style={styles.buttonText}>Send Email</Text>
+      {attachment && (
+        <View style={{ width: '80%', height: 200, marginBottom: 10 }}>
+          <Image source={{ uri: attachment }} style={{ width: '100%', height: '100%' }} />
+        </View>
+      )}
+
+      <TouchableOpacity
+        style={{ backgroundColor: 'green', padding: 10 }}
+        onPress={handleEmail}
+      >
+        <Text style={{ color: 'white' }}>Send Email</Text>
       </TouchableOpacity>
 
-      <Text style={styles.infoText}>Attach proof of certification and provide your email and a brief description before sending.</Text>
+      <Text style={{ marginTop: 20, width: '80%', textAlign: 'center', fontSize: 12 }}>
+        Attach proof of certification and provide your email and a brief description before sending.
+      </Text>
     </View>
   );
 };
