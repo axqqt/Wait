@@ -6,7 +6,7 @@ import { styles } from '../../styles';
 export default function UserTypeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>I am a...</Text>
+      <Text style={styles.title}>Welcome to Kemi 👋🏻</Text>
       <Link href="/user-chat" asChild>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>User Seeking Help</Text>
