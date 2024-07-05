@@ -68,7 +68,7 @@ const PsychiatristRegister = () => {
       quality: 1,
     });
 
-    if (!result.canceled) {
+    if (!result.cancelled) {
       setAttachment(result.uri);
     }
   };
@@ -81,7 +81,7 @@ const PsychiatristRegister = () => {
       quality: 1,
     });
 
-    if (!result.canceled) {
+    if (!result.cancelled) {
       setAttachment(result.uri);
     }
   };

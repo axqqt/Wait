@@ -9,20 +9,23 @@ const baseURL = "https://wait-backend.vercel.app";
 const UserChatScreen = ({ navigation }) => {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const setupSocket = async () => {
       const token = await AsyncStorage.getItem('token');
-      const socket = io(baseURL, {
+      const newSocket = io(baseURL, {
         query: { token }
       });
 
-      socket.on("user-message", (message) => {
+      newSocket.on("user-message", (message) => {
         setChat((prevChat) => [...prevChat, { text: message.text, user: "Anonymous User" }]);
       });
 
+      setSocket(newSocket);
+
       return () => {
-        socket.disconnect();
+        newSocket.disconnect();
       };
     };
 
@@ -32,7 +35,9 @@ const UserChatScreen = ({ navigation }) => {
   const sendMessage = () => {
     if (message.trim() !== "") {
       setChat([...chat, { text: message, user: "You" }]);
-      socket.emit("user-message", { text: message });
+      if (socket) {
+        socket.emit("user-message", { text: message });
+      }
       setMessage("");
     }
   };
