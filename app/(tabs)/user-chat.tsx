@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import io from "socket.io-client";
-import { styles } from "../../styles"; // Ensure styles are imported correctly
-  const baseURL = "https://wait-backend.vercel.app"
+import { styles } from "../../styles";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const socket = io(baseURL);
+const baseURL = "https://wait-backend.vercel.app";
 
 const UserChatScreen = ({ navigation }) => {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
 
   useEffect(() => {
-    socket.on("user-message", (message) => {
-      setChat((prevChat) => [...prevChat, { text: message.text, user: "Anonymous User" }]);
-    });
+    const setupSocket = async () => {
+      const token = await AsyncStorage.getItem('token');
+      const socket = io(baseURL, {
+        query: { token }
+      });
 
-    return () => {
-      socket.disconnect();
+      socket.on("user-message", (message) => {
+        setChat((prevChat) => [...prevChat, { text: message.text, user: "Anonymous User" }]);
+      });
+
+      return () => {
+        socket.disconnect();
+      };
     };
+
+    setupSocket();
   }, []);
 
   const sendMessage = () => {
