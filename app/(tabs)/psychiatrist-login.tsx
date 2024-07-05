@@ -6,6 +6,7 @@ import { styles } from '../../styles';
 const PsychiatristLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+    const baseURL = "https://wait-backend.vercel.app"
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
   });
@@ -21,7 +22,7 @@ const PsychiatristLogin = () => {
 
   const handleGoogleLogin = async (idToken) => {
     try {
-      const response = await fetch('http://localhost:5000/google-login', {
+      const response = await fetch(`${baseURL}/google-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +41,7 @@ const PsychiatristLogin = () => {
 
   const handleEmailLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch(`${baseURL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

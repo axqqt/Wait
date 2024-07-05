@@ -3,7 +3,9 @@ import { Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-nativ
 import io from 'socket.io-client';
 import { styles } from '../../styles'; // Ensure styles are imported correctly
 
-const socket = io('http://localhost:5000'); // Update with your server address
+  const baseURL = "https://wait-backend.vercel.app"
+
+const socket = io(baseURL); // Update with your server address
 
 const UserChatScreen = ({ navigation }) => {
   const [message, setMessage] = useState('');

@@ -9,6 +9,8 @@ const PsychiatristRegister = () => {
   const [description, setDescription] = useState('');
   const [attachment, setAttachment] = useState<string | null>(null);
 
+  const baseURL = "https://wait-backend.vercel.app"
+
   const handleEmail = async () => {
     if (!email.trim()) {
       Alert.alert('Error', 'Please enter your email.');
@@ -30,7 +32,7 @@ const PsychiatristRegister = () => {
     });
 
     try {
-      const response = await axios.post('http://localhost:5000/register', formData, {
+      const response = await axios.post(`${baseURL}/register`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
