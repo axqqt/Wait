@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import io from 'socket.io-client';
-import { styles } from '../../styles'; // Ensure styles are imported correctly
-
+import React, { useState, useEffect } from "react";
+import { Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
+import io from "socket.io-client";
+import { styles } from "../../styles"; // Ensure styles are imported correctly
   const baseURL = "https://wait-backend.vercel.app"
 
-const socket = io(baseURL); // Update with your server address
+const socket = io(baseURL);
 
 const UserChatScreen = ({ navigation }) => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
 
   useEffect(() => {
-    // Listen for incoming messages from psychiatrists
-    socket.on('psychiatrist-message', (message) => {
-      setChat((prevChat) => [...prevChat, { text: message.text, user: 'Psychiatrist' }]);
+    socket.on("user-message", (message) => {
+      setChat((prevChat) => [...prevChat, { text: message.text, user: "Anonymous User" }]);
     });
 
-    // Listen for incoming messages from other users
-    socket.on('user-message', (message) => {
-      setChat((prevChat) => [...prevChat, { text: message.text, user: 'Anonymous User' }]);
-    });
-
-    // Clean up on unmount
     return () => {
       socket.disconnect();
     };
   }, []);
 
   const sendMessage = () => {
-    if (message.trim() !== '') {
-      setChat([...chat, { text: message, user: 'You' }]);
-      socket.emit('user-message', { text: message }); // Emit message to server
-      setMessage('');
+    if (message.trim() !== "") {
+      setChat([...chat, { text: message, user: "You" }]);
+      socket.emit("user-message", { text: message });
+      setMessage("");
     }
   };
 
