@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:5000'); // Replace with your server address
 
-const UserChatScreen = () => {
+const UserChatScreen = ({ navigation }) => {
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
 

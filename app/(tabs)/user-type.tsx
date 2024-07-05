@@ -14,12 +14,12 @@ export default function UserTypeScreen() {
       </Link>
       <Link href="/psychiatrist-login" asChild>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Psychiatrist Login</Text>
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </Link>
       <Link href="/psychatristRegister" asChild>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Register Psychiatrist</Text>
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </Link>
     </View>
