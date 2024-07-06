@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import * as Google from 'expo-auth-session/providers/google';
 import { styles } from '../../styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Link } from 'expo-router';
 
 const PsychiatristLogin = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -85,7 +86,11 @@ const PsychiatristLogin = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-
+        <Link href="/forgotPass" asChild>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Forgot Password</Text>
+        </TouchableOpacity>
+      </Link>
       <TouchableOpacity style={styles.button} onPress={handleEmailLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
